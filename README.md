@@ -5,3 +5,5 @@ change paths as needed.
 
 scp command to send potentially updated mutate.py -> ec2 instance
 sudo scp -i ewoj_2.pem /mnt/c/EECS481/hw3/hw3Files/starter.py ubuntu@ec2-3-80-206-109.compute-1.amazonaws.com:~/hw3
+
+hw3files contains the unchanged starter code
