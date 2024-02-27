@@ -5,29 +5,200 @@ import random
 import copy
 
 class ComparisonMutator(ast.NodeTransformer):
-    def mutate_comparison(self, node):
-        """Mutates comparison operators in an AST node."""
-        #print("accessed this line HERE")
-        randNum=random.random()
-        #print(randNum)
-       # print(type(node))
-        if randNum < 0.5:  # 50% chance
-           # print("RANDOM CHANCE SUCCEED")
-          
-            if isinstance(node, ast.Compare):
-             #   print("\naccessed this line\n")
-                for i, op in enumerate(node.ops):
-                    if isinstance(op, ast.Eq):
-                        node.ops[i] = ast.NotEq()
-                    elif isinstance(op, ast.NotEq):
-                        node.ops[i] = ast.Eq()
-            # Extend with more comparison operator mutations as needed
-        #print("return here")
-        return self.generic_visit(node)
+
+    def visit_Gt(self, node):
+        randomNum=random.random()
+        if(randomNum>0.5):
+            new_node = ast.LtE()
+        else:
+            new_node=ast.Gt()
+        
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
     
+    def visit_Lt(self, node):
+        randomNum=random.random()
+        if(randomNum>0.5):
+            new_node = ast.GtE()
+        else:
+            new_node=ast.Lt()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    
+    def visit_LtE(self, node):
+        randomNum=random.random()
+        #print("called2")
+        if(randomNum>0.5):
+            new_node = ast.Gt()
+        else:
+            new_node=ast.LtE()
+        
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    
+    def visit_GtE(self, node):
+        randomNum=random.random()
+       # print("called")
+        if(randomNum>0.5):
+            new_node = ast.Lt()
+        else:
+            new_node=ast.GtE()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_Eq(self, node):
+        randomNum=random.random()
+       # print("called3")
+        if(randomNum>0.5):
+            new_node = ast.Eq()
+        else:
+            new_node=ast.NotEq()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_NotEq(self, node):
+        randomNum=random.random()
+        #doesn't get called
+        if(randomNum>0.5):
+            new_node = ast.NotEq()
+        else:
+            new_node=ast.Eq()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_NotIn(self, node):
+        randomNum=random.random()
+        #doesn't get called
+        print("Not In")
+        if(randomNum>0.5):
+            new_node = ast.In()
+        else:
+            new_node=ast.NotIn()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_In(self, node):
+        randomNum=random.random()
+        #print("called7")
+        if(randomNum>0.5):
+            new_node = ast.In()
+        else:
+            new_node=ast.NotIn()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_UAdd(self, node):
+        randomNum=random.random()
+        print("UAdding")
+        if(randomNum>0.5):
+            new_node = ast.UAdd()
+        else:
+            new_node=ast.USub()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_USub(self, node):
+        randomNum=random.random()
+        print("USubtracting")
+        if(randomNum>0.5):
+            new_node = ast.UAdd()
+        else:
+            new_node=ast.USub()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_Add(self, node):
+        randomNum=random.random()
+        #print("Adding")
+        if(randomNum>0.5):
+            new_node = ast.Add()
+        else:
+            new_node=ast.Sub()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_Sub(self, node):
+        randomNum=random.random()
+       # print("Subtracting")
+        if(randomNum>0.5):
+            new_node = ast.Add()
+        else:
+            new_node=ast.Sub()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_Mult(self, node):
+        randomNum=random.random()
+        #print("Multiplying")
+        if(randomNum>0.5):
+            new_node = ast.Mult()
+        else:
+            new_node=ast.Div()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_Div(self, node):
+        randomNum=random.random()
+        print("Dividing")
+        if(randomNum>0.5):
+            new_node = ast.Mult()
+         
+        else:
+            new_node=ast.Div()
+
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_Pow(self, node):
+        randomNum=random.random()
+        print("exponentiating")
+        if(randomNum>0.5):
+            new_node = ast.Pow()
+
+        else:
+            new_node=ast.Div()
+           
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_FloorDiv(self, node):
+        randomNum=random.random()
+        print("Floor Dividing")
+        if(randomNum>0.5):
+            new_node = ast.FloorDiv()
+        else:
+            new_node=ast.Mult()
+        node=ast.copy_location(new_node, node)
+        self.generic_visit(node)
+        return node
+    def visit_Expr(self, node):
+        randomNum=random.random()
+        #print("Assigning")
+        #self.generic_visit(node)
+        #return node
+       # t=isinstance(node.value, ast.Call)
+        #print(t)
+        #print(node.value)
+       # if(t):
+           # print("t==true")
+           # print(node.value.func)
+            #print(isinstance(node.value.func, ast.Name))
+        if isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name) and randomNum >0.5:
+            print("return NOTHING")
+            #self.generic_visit(None)
+            return None
+            
+       # print("return something")
+        self.generic_visit(node)
+        return node
+        
+    '''
     def visit_Num(self, node):
         #WE CAN GET RID OF THESE PRINT STATMENTS LATER
-        print("Visitor sees a number: ", ast.dump(node), " aka ", astor.to_source(node))
+       # print("Visitor sees a number: ", ast.dump(node), " aka ", astor.to_source(node))
         # Note how we never say "node.contents = 481" or anything like
         # that. We do not directly assign to nodes. Intead, the Visitor
         # Pattern hides that information from us. We use the return value
@@ -38,10 +209,18 @@ class ComparisonMutator(ast.NodeTransformer):
 
     def visit_Str(self, node):
         #WE CAN GET RID OF THESE PRINT STATMENTS LATER
-        print("Visitor sees a string: ", ast.dump(node), " aka ", astor.to_source(node))
+        #print("Visitor sees a string: ", ast.dump(node), " aka ", astor.to_source(node))
         # Note: some students may want: return ast.Str(s=481)
         return ast.Str("SE")
-
+        randNum=random.random()
+        print(randNum)
+        if randNum < 0.5:
+            return ast.Str("SE")
+        else:
+            return ast
+    '''
+        
+        
 class addSub(ast.NodeTransformer):
    
     def addSub(self, node):
@@ -83,7 +262,7 @@ def apply_mutations_and_generate_files(tree, original_filename, num_mutants):
         #mutator_binary_op = addSub()
        # mutated_tree = mutator_binary_op.visit(mutated_tree)  # Changed: Call visit method
         #ast.fix_missing_locations(tree)
-        co = compile(mutated_tree, "", "exec")
+        #co = compile(mutated_tree, "", "exec")
         #exec(co)
         
         mutated_code = astor.to_source(mutated_tree)
