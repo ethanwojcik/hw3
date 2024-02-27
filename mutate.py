@@ -8,7 +8,7 @@ class ComparisonMutator(ast.NodeTransformer):
 
     def visit_Gt(self, node):
         randomNum=random.random()
-        if(randomNum>0.5):
+        if(randomNum>0.950):
             new_node = ast.LtE()
         else:
             new_node=ast.Gt()
@@ -19,7 +19,7 @@ class ComparisonMutator(ast.NodeTransformer):
     
     def visit_Lt(self, node):
         randomNum=random.random()
-        if(randomNum>0.5):
+        if(randomNum>0.950):
             new_node = ast.GtE()
         else:
             new_node=ast.Lt()
@@ -30,7 +30,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_LtE(self, node):
         randomNum=random.random()
         #print("called2")
-        if(randomNum>0.5):
+        if(randomNum>0.95):
             new_node = ast.Gt()
         else:
             new_node=ast.LtE()
@@ -42,7 +42,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_GtE(self, node):
         randomNum=random.random()
        # print("called")
-        if(randomNum>0.5):
+        if(randomNum>0.95):
             new_node = ast.Lt()
         else:
             new_node=ast.GtE()
@@ -52,7 +52,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_Eq(self, node):
         randomNum=random.random()
        # print("called3")
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.Eq()
         else:
             new_node=ast.NotEq()
@@ -62,7 +62,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_NotEq(self, node):
         randomNum=random.random()
         #doesn't get called
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.NotEq()
         else:
             new_node=ast.Eq()
@@ -73,7 +73,7 @@ class ComparisonMutator(ast.NodeTransformer):
         randomNum=random.random()
         #doesn't get called
         print("Not In")
-        if(randomNum>0.5):
+        if(randomNum>0.95):
             new_node = ast.In()
         else:
             new_node=ast.NotIn()
@@ -83,7 +83,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_In(self, node):
         randomNum=random.random()
         #print("called7")
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.In()
         else:
             new_node=ast.NotIn()
@@ -93,7 +93,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_UAdd(self, node):
         randomNum=random.random()
         print("UAdding")
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.UAdd()
         else:
             new_node=ast.USub()
@@ -103,7 +103,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_USub(self, node):
         randomNum=random.random()
         print("USubtracting")
-        if(randomNum>0.5):
+        if(randomNum>0.95):
             new_node = ast.UAdd()
         else:
             new_node=ast.USub()
@@ -113,7 +113,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_Add(self, node):
         randomNum=random.random()
         #print("Adding")
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.Add()
         else:
             new_node=ast.Sub()
@@ -123,7 +123,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_Sub(self, node):
         randomNum=random.random()
        # print("Subtracting")
-        if(randomNum>0.5):
+        if(randomNum>0.95):
             new_node = ast.Add()
         else:
             new_node=ast.Sub()
@@ -133,17 +133,18 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_Mult(self, node):
         randomNum=random.random()
         #print("Multiplying")
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.Mult()
         else:
             new_node=ast.Div()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
+    
     def visit_Div(self, node):
         randomNum=random.random()
         print("Dividing")
-        if(randomNum>0.5):
+        if(randomNum>0.95):
             new_node = ast.Mult()
          
         else:
@@ -155,7 +156,7 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_Pow(self, node):
         randomNum=random.random()
         print("exponentiating")
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.Pow()
 
         else:
@@ -167,14 +168,14 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_FloorDiv(self, node):
         randomNum=random.random()
         print("Floor Dividing")
-        if(randomNum>0.5):
+        if(randomNum>0.05):
             new_node = ast.FloorDiv()
         else:
             new_node=ast.Mult()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
-    def visit_Expr(self, node):
+    def visit_xpr(self, node):
         randomNum=random.random()
         #print("Assigning")
         #self.generic_visit(node)
@@ -186,14 +187,14 @@ class ComparisonMutator(ast.NodeTransformer):
            # print("t==true")
            # print(node.value.func)
             #print(isinstance(node.value.func, ast.Name))
-        if isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name) and randomNum >0.5:
-            print("return NOTHING")
+        #if isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name) and randomNum >0.95:
+            #print("return NOTHING")
             #self.generic_visit(None)
-            return None
+            #return None
             
        # print("return something")
-        self.generic_visit(node)
-        return node
+       # self.generic_visit(node)
+        #return node
         
     '''
     def visit_Num(self, node):
@@ -275,7 +276,7 @@ if __name__ == "__main__":
     random.seed(0)
    # print("test")
     if len(sys.argv) != 3:
-        print("Usage: python mutate.py <source_file.py> <num_mutants>")
+        print("USAGE: python mutate.py <source_file.py> <num_mutants>")
         sys.exit(1)
 
     source_file_path = sys.argv[1]
