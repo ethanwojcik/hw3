@@ -3,13 +3,22 @@ import astor
 import sys
 import random
 import copy
-
+ #total mutants where a change did occur
+mutationCount=0 #total number of potential mutants
+actionCount=0 # number of changes that occur
+maxMutants=1 # number of mutants before we stop making changes  
 class ComparisonMutator(ast.NodeTransformer):
-
+   
     def visit_Gt(self, node):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+       
         randomNum=random.random()
-        if(randomNum>0.950):
+        if(randomNum>0.95 and actionCount<maxMutants):
             new_node = ast.LtE()
+            actionCount+=1
         else:
             new_node=ast.Gt()
         
@@ -18,9 +27,15 @@ class ComparisonMutator(ast.NodeTransformer):
         return node
     
     def visit_Lt(self, node):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
         randomNum=random.random()
-        if(randomNum>0.950):
+        if(randomNum>0.95 and actionCount<maxMutants):
             new_node = ast.GtE()
+            actionCount+=1
+
         else:
             new_node=ast.Lt()
         node=ast.copy_location(new_node, node)
@@ -28,10 +43,16 @@ class ComparisonMutator(ast.NodeTransformer):
         return node
     
     def visit_LtE(self, node):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
         randomNum=random.random()
         #print("called2")
-        if(randomNum>0.95):
+        if(randomNum>0.95 and actionCount<maxMutants):
             new_node = ast.Gt()
+            actionCount+=1
+
         else:
             new_node=ast.LtE()
         
@@ -40,9 +61,15 @@ class ComparisonMutator(ast.NodeTransformer):
         return node
     
     def visit_GtE(self, node):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
         randomNum=random.random()
        # print("called")
-        if(randomNum>0.95):
+        if(randomNum>0.95 and actionCount<maxMutants):
+            actionCount+=1
+
             new_node = ast.Lt()
         else:
             new_node=ast.GtE()
@@ -50,30 +77,47 @@ class ComparisonMutator(ast.NodeTransformer):
         self.generic_visit(node)
         return node
     def visit_Eq(self, node):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
         randomNum=random.random()
        # print("called3")
-        if(randomNum>0.05):
-            new_node = ast.Eq()
-        else:
+        if(randomNum>0.95 and actionCount<maxMutants):
             new_node=ast.NotEq()
+            actionCount+=1
+        else:
+            new_node=ast.Eq()
+
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
     def visit_NotEq(self, node):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
         randomNum=random.random()
         #doesn't get called
-        if(randomNum>0.05):
-            new_node = ast.NotEq()
-        else:
+        if(randomNum>0.95 and actionCount<maxMutants):
+            
             new_node=ast.Eq()
+            actionCount+=1
+        else:
+            new_node = ast.NotEq()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
     def visit_NotIn(self, node):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
         randomNum=random.random()
         #doesn't get called
         print("Not In")
-        if(randomNum>0.95):
+        if(randomNum>0.95 and actionCount<maxMutants):
+            actionCount+=1
             new_node = ast.In()
         else:
             new_node=ast.NotIn()
@@ -82,29 +126,47 @@ class ComparisonMutator(ast.NodeTransformer):
         return node
     def visit_In(self, node):
         randomNum=random.random()
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
         #print("called7")
-        if(randomNum>0.05):
-            new_node = ast.In()
-        else:
+        if(randomNum>0.95 and actionCount<maxMutants):
+            
+            actionCount+=1
             new_node=ast.NotIn()
+        else:
+            new_node = ast.In()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
     def visit_UAdd(self, node):
         randomNum=random.random()
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+        
         print("UAdding")
-        if(randomNum>0.05):
-            new_node = ast.UAdd()
-        else:
+        if(randomNum>0.95 and actionCount<maxMutants):
+           
             new_node=ast.USub()
+            actionCount+=1
+        else:
+            new_node = ast.UAdd()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
     def visit_USub(self, node):
         randomNum=random.random()
-        print("USubtracting")
-        if(randomNum>0.95):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+
+        if(randomNum>0.95 and actionCount<maxMutants):
             new_node = ast.UAdd()
+            actionCount+=1
         else:
             new_node=ast.USub()
         node=ast.copy_location(new_node, node)
@@ -112,19 +174,30 @@ class ComparisonMutator(ast.NodeTransformer):
         return node
     def visit_Add(self, node):
         randomNum=random.random()
-        #print("Adding")
-        if(randomNum>0.05):
-            new_node = ast.Add()
-        else:
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+
+        if(randomNum>0.95 and actionCount<maxMutants):
+           
             new_node=ast.Sub()
+            actionCount+=1
+        else:
+             new_node = ast.Add()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
     def visit_Sub(self, node):
         randomNum=random.random()
-       # print("Subtracting")
-        if(randomNum>0.95):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+
+        if(randomNum>0.95 and actionCount<maxMutants):
             new_node = ast.Add()
+            actionCount+=1
         else:
             new_node=ast.Sub()
         node=ast.copy_location(new_node, node)
@@ -132,11 +205,17 @@ class ComparisonMutator(ast.NodeTransformer):
         return node
     def visit_Mult(self, node):
         randomNum=random.random()
-        #print("Multiplying")
-        if(randomNum>0.05):
-            new_node = ast.Mult()
-        else:
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+
+        if(randomNum>0.95 and actionCount<maxMutants):
+           # new_node = ast.Mult()
             new_node=ast.Div()
+            actionCount+=1
+        else:
+            new_node = ast.Mult()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
@@ -144,7 +223,13 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_Div(self, node):
         randomNum=random.random()
         print("Dividing")
-        if(randomNum>0.95):
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+
+        if(randomNum>0.95 and actionCount<maxMutants):
+            actionCount+=1
             new_node = ast.Mult()
          
         else:
@@ -156,11 +241,16 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_Pow(self, node):
         randomNum=random.random()
         print("exponentiating")
-        if(randomNum>0.05):
-            new_node = ast.Pow()
-
-        else:
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+        if(randomNum>0.95 and actionCount<maxMutants):
+         
             new_node=ast.Div()
+            actionCount+=1
+        else:
+            new_node = ast.Pow()
            
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
@@ -168,10 +258,16 @@ class ComparisonMutator(ast.NodeTransformer):
     def visit_FloorDiv(self, node):
         randomNum=random.random()
         print("Floor Dividing")
-        if(randomNum>0.05):
-            new_node = ast.FloorDiv()
-        else:
+        global mutationCount
+        mutationCount+=1
+        global actionCount
+        global maxMutants
+        if(randomNum>0.95 and actionCount<maxMutants):
+           
             new_node=ast.Mult()
+            actionCount+=1
+        else:
+            new_node = ast.FloorDiv()
         node=ast.copy_location(new_node, node)
         self.generic_visit(node)
         return node
@@ -196,45 +292,12 @@ class ComparisonMutator(ast.NodeTransformer):
        # self.generic_visit(node)
         #return node
         
-    '''
-    def visit_Num(self, node):
-        #WE CAN GET RID OF THESE PRINT STATMENTS LATER
-       # print("Visitor sees a number: ", ast.dump(node), " aka ", astor.to_source(node))
-        # Note how we never say "node.contents = 481" or anything like
-        # that. We do not directly assign to nodes. Intead, the Visitor
-        # Pattern hides that information from us. We use the return value
-        # of this function and the new node we return is put in place by
-        # the library. 
-        # Note: some students may want: return ast.Num(n=481) 
-        return ast.Num(481)
+ 
+        
+        
 
-    def visit_Str(self, node):
-        #WE CAN GET RID OF THESE PRINT STATMENTS LATER
-        #print("Visitor sees a string: ", ast.dump(node), " aka ", astor.to_source(node))
-        # Note: some students may want: return ast.Str(s=481)
-        return ast.Str("SE")
-        randNum=random.random()
-        print(randNum)
-        if randNum < 0.5:
-            return ast.Str("SE")
-        else:
-            return ast
-    '''
-        
-        
-class addSub(ast.NodeTransformer):
    
-    def addSub(self, node):
-        """Mutates binary operators in an AST node."""
-        randNum=random.random()
-        print(randNum)
-        if randNum < 0.5:  # 50% chance
-            if isinstance(node.op, ast.Add):
-                node.op = ast.Sub()
-            elif isinstance(node.op, ast.Sub):
-                node.op = ast.Add()
-            # Extend with more binary operator mutations as needed
-        return self.generic_visit(node)
+
 
 def parse_file_to_AST(filename):
     """Parses a Python source file to an Abstract Syntax Tree (AST)."""
@@ -247,10 +310,13 @@ def parse_file_to_AST(filename):
 
 def apply_mutations_and_generate_files(tree, original_filename, num_mutants):
     """Applies mutations to an AST and writes mutated code to new files."""
+    global actionCount
+    global mutationCount
     for i in range(num_mutants):
         # Make a deep copy of the AST for each mutation to ensure isolation
         mutated_tree = copy.deepcopy(tree)
-        
+        actionCount=0
+        mutationCount=0
         # Apply different types of mutations
         mutator_comparison = ComparisonMutator()
         prev=mutated_tree
